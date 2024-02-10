@@ -1,7 +1,12 @@
 package com.mindex.challenge.controller;
 
+import com.mindex.challenge.data.Compensation;
 import com.mindex.challenge.data.Employee;
+import com.mindex.challenge.data.ReportingStructure;
 import com.mindex.challenge.service.EmployeeService;
+
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +39,35 @@ public class EmployeeController {
 
         employee.setEmployeeId(id);
         return employeeService.update(employee);
+    }
+
+    @GetMapping("/employee/{id}/reportingstruct")
+    public ReportingStructure getReporting(@PathVariable String id){
+        LOG.debug("Received employee create request for id [{}]", id);
+        Employee employee = employeeService.read(id);
+        ReportingStructure reportingStruct = employee.getReporting();
+
+        // -1 in order to remove the root node
+        reportingStruct.setNumberOfReports(visitReporting(employee) - 1);
+        return reportingStruct;
+    }
+
+    /**
+     * Recursively visit each employee under the given
+     * @param e given employee (may or may not have direct reporting)
+     * @return the number of nodes connected to the root (including the root)
+     */
+    private int visitReporting(Employee e){
+        List<Employee> dirReports = e.getDirectReports();
+        if (dirReports == null){
+            return 1;
+        }
+        else{
+            int count = 1;
+            for (Employee reporter : dirReports){
+                count += this.visitReporting(this.employeeService.read(reporter.getEmployeeId()));
+            }
+            return count;
+        }
     }
 }

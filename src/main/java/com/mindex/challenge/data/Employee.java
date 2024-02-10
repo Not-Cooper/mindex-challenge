@@ -2,6 +2,9 @@ package com.mindex.challenge.data;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
 public class Employee {
     private String employeeId;
     private String firstName;
@@ -9,6 +12,9 @@ public class Employee {
     private String position;
     private String department;
     private List<Employee> directReports;
+
+    @JsonIgnore
+    private ReportingStructure reportingStructure;
 
     public Employee() {
     }
@@ -59,5 +65,14 @@ public class Employee {
 
     public void setDirectReports(List<Employee> directReports) {
         this.directReports = directReports;
+    }
+
+    /**
+     * generates a new reporting structure object with each call
+     * @return the reporting structure generated
+     */
+    public ReportingStructure getReporting(){
+        this.reportingStructure = new ReportingStructure(this);
+        return this.reportingStructure;
     }
 }
