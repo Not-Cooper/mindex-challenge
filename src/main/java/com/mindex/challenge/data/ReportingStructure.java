@@ -1,15 +1,6 @@
 package com.mindex.challenge.data;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreType;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mindex.challenge.dao.EmployeeRepository;
-
 
 /**
  * Reporting structure: represents employees directly and indirectly reporting to the employee a reporting structure is connected to

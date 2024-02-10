@@ -2,8 +2,6 @@ package com.mindex.challenge;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,12 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.mindex.challenge.dao.CompensationRepository;
 import com.mindex.challenge.dao.EmployeeRepository;
 import com.mindex.challenge.data.Compensation;
 import com.mindex.challenge.data.Employee;
@@ -25,15 +19,11 @@ import com.mindex.challenge.data.ReportingStructure;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ChallengeApplicationTests {
-	private String employeeUrl;
     private String employeeIdUrl;
     private String compensationURL;
 	
 	@Autowired
     private EmployeeRepository employeeRepository;
-
-    @Autowired
-    private CompensationRepository compensationRepository;
 
 	@LocalServerPort
     private int port;
@@ -43,7 +33,6 @@ public class ChallengeApplicationTests {
 
     @Before
     public void setup() {
-        employeeUrl = "http://localhost:" + port + "/employee";
         employeeIdUrl = "http://localhost:" + port + "/employee/{id}";
         compensationURL = "http://localhost:" + port + "/compensation/{id}";
     }
@@ -109,7 +98,6 @@ public class ChallengeApplicationTests {
 
         assertCompensationEquivalence(comp, retrieved);
     }
-
 
     private static void assertCompensationEquivalence(Compensation expected, Compensation actual) {
         assertEquals(expected.getEffectiveDate(), actual.getEffectiveDate());
